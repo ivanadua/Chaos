@@ -15,24 +15,26 @@ theta3 = st.slider("Theta 3 (rad)", -3.14, 3.14, 1.57)
 gif_path = Path(__file__).parent / "pendulum.gif"
 
 if st.button("Run Simulation"):
-
-    with st.spinner("Running simulation..."):
+    with st.spinner("Running simulation... This may take a minute..."):
         result = subprocess.run(
-    [
-        sys.executable,
-        "pendy.py",
-        str(theta1),
-        str(theta2),
-        str(theta3)
-    ],
-    capture_output=True,
-    text=True
-)
-
-st.text(result.stdout)
-st.text(result.stderr)
+            [
+                sys.executable,
+                "pendy.py",
+                str(theta1),
+                str(theta2),
+                str(theta3),
+            ],
+            capture_output=True,
+            text=True,
+        )
 
     st.success("Simulation complete!")
+
+    if result.stdout:
+        st.code(result.stdout)
+
+    if result.stderr:
+        st.error(result.stderr)
 
     if gif_path.exists():
         st.image(str(gif_path))
