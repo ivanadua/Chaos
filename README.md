@@ -33,7 +33,7 @@ state = np.array([
 
 ```
 Anywhere that I've yelled at you saying "YOU CAN CHANGE THIS!" is a variable you can edit. Remember, all values of theta are in radians, so for ease, write them in terms of pi. For example, 90 degrees is pi/2 radians, so to change theta1 to pi/2 radians, you edit the row with #theta 1 with:
-np.pi/2. The greater the engle, the more chaotic your system is likely to be.
+np.pi/2. The greater the angle, the more chaotic your system is likely to be.
 
 Now, find this part of the code:
 
@@ -85,7 +85,8 @@ By the end of some kind of eternity, you'll have a beautiful phase map in front 
 *The Fractal Boundaries*: The swirling, marbled patterns separating the dark and bright zones represent the complex, highly sensitive boundaries typical of chaotic dynamical systems, where a tiny change in initial angles completely alters the outcome.
 
 (darker color, <2
-) mean stable trajectories, while higher values (brighter color, 
->3) indicate extreme chaos.
+) mean stable trajectories, while higher values (brighter color, >3) indicate extreme chaos.
+
+>Nonperiodic solutions are ordinarily unstable with respect to small modifications, so that slightly differing initial states can evolve into considerably different state - Edward Lorentz
 
 Have fun exploring chaos theory!
