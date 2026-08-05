@@ -81,11 +81,11 @@ Have fun exploring chaos theory!
 ## Project Structure
 
 ```
-app.py                  # Streamlit interface
-pendy.py                # Runs the simulation and generates the animation
-lagrangian.py           # Symbolic Lagrangian derivation
-pendulum_equations.py   # Generated equations of motion
-requirements.txt
+app.py                       # Streamlit interface
+pendy.py                     # Runs the simulation and generates the animation
+Triple_pendulum.py           # Symbolic Lagrangian derivation
+pendulum_equations.py        # Stored equations of motion
+requirements.txt             # Libraries needed!
 ```
 
 ## Technologies Used
