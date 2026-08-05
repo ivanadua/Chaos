@@ -3,6 +3,7 @@ from numpy import sin, cos
 import matplotlib.pyplot as plt
 from pendulum_equations import _lambdifygenerated as accel
 import matplotlib.animation as animation
+import sys
 
 # 1. Define simulation constants
 L1 = L2 = L3 = 1.0
@@ -10,20 +11,29 @@ m1 = m2 = m3 = 1.0
 g = 9.81
 
 # 2. Initial state vector: [theta1, theta2, theta3, omega1, omega2, omega3]
+if len(sys.argv) == 4:
+    theta1 = float(sys.argv[1])
+    theta2 = float(sys.argv[2])
+    theta3 = float(sys.argv[3])
+else:
+    theta1 = np.pi
+    theta2 = np.pi / 6
+    theta3 = np.pi / 2
+
 state = np.array([
-    np.pi,   # theta1
-    np.pi/6,   # theta2
-    np.pi/2,   # theta3
-    0.0,       # omega1
-    0.0,       # omega2
-    0.0        # omega3
+    theta1,
+    theta2,
+    theta3,
+    0.0,
+    0.0,
+    0.0
 ], dtype=float)
 
-# 3. Derivatives function evaluates 'accel'
+
 def derivatives(state):
     theta1, theta2, theta3, omega1, omega2, omega3 = state
 
-    
+  
     alpha1, alpha2, alpha3 = accel(
         theta1, theta2, theta3,
         omega1, omega2, omega3,
@@ -54,16 +64,14 @@ dt = 0.0001
 time = 0.0
 history = []
 
-for i in range(100000):
-  
+for i in range(50000):
+   
     history.append(np.copy(state)) 
     state = rk4_step(state, dt)
     time += dt
 
 history = np.array(history)
 
-
-# 6. ANIMATION TIME!!
 
 print("Processing Cartesian coordinates for animation...")
 theta1_hist = history[:, 0]
@@ -80,7 +88,7 @@ y2 = y1 - L2 * np.cos(theta2_hist)
 x3 = x2 + L3 * np.sin(theta3_hist)
 y3 = y2 - L3 * np.cos(theta3_hist)
 
-# Setup the canvas figure window
+
 fig, ax = plt.subplots(figsize=(6, 6))
 max_length = L1 + L2 + L3
 ax.set_xlim(-max_length - 0.5, max_length + 0.5)
@@ -88,7 +96,7 @@ ax.set_ylim(-max_length - 0.5, max_length + 0.5)
 ax.set_aspect('equal')
 ax.grid(True)
 
-# Graphic element tracks
+
 line, = ax.plot([], [], 'o-', lw=2, color='#1f77b4', markersize=8)  # Rods & Bobs
 trace, = ax.plot([], [], '-', lw=1, color='red', alpha=0.4)         # Tip path trail
 time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
@@ -107,11 +115,11 @@ def animate(i):
     if idx >= len(history):
         return line, trace, time_text
 
-    
+    # Extract single step joint locations
     this_x = [0, x1[idx], x2[idx], x3[idx]]
     this_y = [0, y1[idx], y2[idx], y3[idx]]
     
-
+    # Update trailing path behind the bottom bob
     trail_x.append(x3[idx])
     trail_y.append(y3[idx])
     if len(trail_x) > 200:  
@@ -132,4 +140,9 @@ ani = animation.FuncAnimation(
     blit=True
 )
 
-plt.show()
+from matplotlib.animation import PillowWriter
+
+writer = PillowWriter(fps=50)
+ani.save("pendulum.gif", writer=writer)
+
+plt.close(fig)
