@@ -17,13 +17,20 @@ gif_path = Path(__file__).parent / "pendulum.gif"
 if st.button("Run Simulation"):
 
     with st.spinner("Running simulation..."):
-        subprocess.run([
-            sys.executable,
-            "pendy.py",
-            str(theta1),
-            str(theta2),
-            str(theta3)
-        ])
+        result = subprocess.run(
+    [
+        sys.executable,
+        "pendy.py",
+        str(theta1),
+        str(theta2),
+        str(theta3)
+    ],
+    capture_output=True,
+    text=True
+)
+
+st.text(result.stdout)
+st.text(result.stderr)
 
     st.success("Simulation complete!")
 
