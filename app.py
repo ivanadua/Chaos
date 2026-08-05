@@ -1,10 +1,9 @@
 import streamlit as st
 import subprocess
 import sys
-import os
-import time
+from pathlib import Path
 
-st.set_page_config(page_title="Triple Pendulum Simulator", layout="centered")
+st.set_page_config(page_title="Triple Pendulum Simulator")
 
 st.title("Triple Pendulum Simulator")
 st.write("Adjust the initial angles and click **Run Simulation**.")
@@ -13,9 +12,11 @@ theta1 = st.slider("Theta 1 (rad)", -3.14, 3.14, 3.14)
 theta2 = st.slider("Theta 2 (rad)", -3.14, 3.14, 0.52)
 theta3 = st.slider("Theta 3 (rad)", -3.14, 3.14, 1.57)
 
+gif_path = Path(__file__).parent / "pendulum.gif"
+
 if st.button("Run Simulation"):
 
-    with st.spinner("Running simulation... This may take a minute."):
+    with st.spinner("Running simulation..."):
         subprocess.run([
             sys.executable,
             "pendy.py",
@@ -26,13 +27,7 @@ if st.button("Run Simulation"):
 
     st.success("Simulation complete!")
 
-    # Give the GIF a moment to finish writing
-    time.sleep(1)
-
-    if os.path.exists("pendulum.gif"):
-        with open("pendulum.gif", "rb") as file:
-            gif = file.read()
-
-        st.image(gif)
+    if gif_path.exists():
+        st.image(str(gif_path))
     else:
-        st.error("pendulum.gif was not found.")
+        st.error(f"Couldn't find {gif_path}")
