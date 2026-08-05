@@ -143,6 +143,11 @@ ani = animation.FuncAnimation(
 from matplotlib.animation import PillowWriter
 
 writer = PillowWriter(fps=50)
-ani.save("pendulum.gif", writer=writer)
+from pathlib import Path
+
+output_path = Path(__file__).parent / "pendulum.gif"
+ani.save(output_path, writer=writer)
+
+print(f"Saved animation to {output_path}")
 
 plt.close(fig)
